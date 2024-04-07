@@ -1,6 +1,14 @@
 import streamlit as st
 import auth_functions
 
+page_bg_img ="""
+<style>
+[data-testid="stAppViewContainer"]{
+    background-image: url("https://www.google.com/imgres?q=pastel%20aesthetic%20background%20wallpaper%20for%20web%20applications&imgurl=https%3A%2F%2Fmarketplace.canva.com%2FEAFLJuy-Cfc%2F2%2F0%2F1600w%2Fcanva-pink-pastel-abstract-watercolor-seek-magic-everyday-quote-desktop-wallpaper-vb3Iv3AjFas.jpg&imgrefurl=https%3A%2F%2Fwww.canva.com%2Fdesktop-wallpapers%2Ftemplates%2Fpastel%2F&docid=JMT0u3abomAFhM&tbnid=_jZm3sggcRYg3M&vet=12ahUKEwip08mc1a-FAxUlwzgGHSCLB1IQM3oECGIQAA..i&w=1600&h=900&hcb=2&ved=2ahUKEwip08mc1a-FAxUlwzgGHSCLB1IQM3oECGIQAA")
+    background-size: cover;  
+}
+</style>
+"""
 st.header('Acumen Chat Academy')
 st.write('Welcome to the application')
 ## -------------------------------------------------------------------------------------------------
