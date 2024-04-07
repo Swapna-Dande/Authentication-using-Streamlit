@@ -71,6 +71,9 @@ def sign_in(email:str, password:str) -> None:
 
         # Get account information
         user_info = get_account_info(id_token)["users"][0]
+        # Check user_type
+        st.session_state.user_info = user_info
+        st.session_state.user_type = user_info["user_type"]
 
         # If email is not verified, send verification email and do not sign in
         if not user_info["emailVerified"]:
@@ -79,19 +82,29 @@ def sign_in(email:str, password:str) -> None:
 
         # Save user info to session state and rerun
         else:
-            st.session_state.user_info = user_info
-            st.experimental_rerun()
+            if st.session_state.user_type == "student":
+                # Redirect to student_main.py
+                st.experimental_rerun()
+            elif st.session_state.user_type == "teacher":
+                # Redirect to teacher_main.py
+                st.experimental_rerun()
+            else:
+                st.session_state.auth_warning = 'Error: Invalid user type'
+
+            #st.session_state.user_info = user_info
+            #st.experimental_rerun()
+
 
     except requests.exceptions.HTTPError as error:
         error_message = json.loads(error.args[1])['error']['message']
         if error_message in {"INVALID_EMAIL","EMAIL_NOT_FOUND","INVALID_PASSWORD","MISSING_PASSWORD"}:
             st.session_state.auth_warning = 'Error: Use a valid email and password'
         else:
-            st.session_state.auth_warning = 'Error: Please try again later'
+            st.session_state.auth_warning = 'Error: Please Use Correct User type'
 
     except Exception as error:
         print(error)
-        st.session_state.auth_warning = 'Error: Please try again later'
+        st.session_state.auth_warning = 'Error: Please Use Correct User type'
 
 
 def create_account(email:str, password:str) -> None:
@@ -110,11 +123,11 @@ def create_account(email:str, password:str) -> None:
         elif error_message in {"INVALID_EMAIL","INVALID_PASSWORD","MISSING_PASSWORD","MISSING_EMAIL","WEAK_PASSWORD"}:
             st.session_state.auth_warning = 'Error: Use a valid email and password'
         else:
-            st.session_state.auth_warning = 'Error: Please try again later'
+            st.session_state.auth_warning = 'Error: Please Use Correct User type'
     
     except Exception as error:
         print(error)
-        st.session_state.auth_warning = 'Error: Please try again later'
+        st.session_state.auth_warning = 'Error: Please Use Correct User type'
 
 
 def reset_password(email:str) -> None:
@@ -127,10 +140,10 @@ def reset_password(email:str) -> None:
         if error_message in {"MISSING_EMAIL","INVALID_EMAIL","EMAIL_NOT_FOUND"}:
             st.session_state.auth_warning = 'Error: Use a valid email'
         else:
-            st.session_state.auth_warning = 'Error: Please try again later'    
+            st.session_state.auth_warning = 'Error: Please Use Correct User type'    
     
     except Exception:
-        st.session_state.auth_warning = 'Error: Please try again later'
+        st.session_state.auth_warning = 'Error: Please Use Correct User type'
 
 
 def sign_out() -> None:
